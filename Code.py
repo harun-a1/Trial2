@@ -3,8 +3,11 @@ import sys
 import socket
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# Bind the socket to the port
+server = socket.gethostname()
 port = 8080
-sock.bind(('', port)) # actually bind
+server_address = (server,port)
+sock.bind(server_address) # actually bind
 sock.listen(1)
 
 response = requests.get('https://api.chucknorris.io/jokes/random')
