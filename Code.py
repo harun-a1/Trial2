@@ -1,14 +1,15 @@
 import requests
-import sys
 import socket
+import sys
 
+# Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Bind the socket to the port
-server = socket.gethostname()
-port = 8080
-server_address = (server,port)
-sock.bind(server_address) # actually bind
+server_address = ('localhost', 8080)
+sock.bind(server_address)
+#listen
 sock.listen(1)
+
 
 response = requests.get('https://api.chucknorris.io/jokes/random')
 
