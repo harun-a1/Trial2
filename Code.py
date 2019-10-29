@@ -1,4 +1,11 @@
 import requests
+import sys
+import socket
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+port = 8080
+sock.bind(('', port)) # actually bind
+sock.listen(1)
 
 response = requests.get('https://api.chucknorris.io/jokes/random')
 
