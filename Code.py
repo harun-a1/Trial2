@@ -1,29 +1,45 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Oct 28 11:08:42 2019
+
+@author: harundemir
+"""
+
 import requests
 import socket
 import sys
-
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Bind the socket to the port
-server_address = ('localhost', 8080)
-sock.bind(server_address)
-#listen
-sock.listen(1)
+from flask import Flask
 
 
-response = requests.get('https://api.chucknorris.io/jokes/random')
+# If `entrypoint` is not defined in app.yaml, App Engine will look for an app
+# called `app` in `main.py`.
+app = Flask(__name__)
 
-responseCode = response.status_code
-responseJoke = response.json()['value']
 
-all_freq = {} 
+@app.route('/')
+
+def func():
+    
+    response = requests.get('https://api.chucknorris.io/jokes/random')
+
+    responseCode = response.status_code
+    responseJoke = response.json()['value']
+
+    all_freq = {} 
   
-for i in responseJoke: 
-    if i in all_freq: 
-        all_freq[i] += 1
-    else: 
-        all_freq[i] = 1
+    for i in responseJoke: 
+        if i in all_freq: 
+            all_freq[i] += 1
+        else: 
+            all_freq[i] = 1
 
-print(responseJoke, '\n')
-print ("Count of all characters in the joke is :\n "
-                                        +  str(all_freq)) 
+    Joke = responseJoke
+    result = str(all_freq)
+    return Joke + ' \n Counts: ' + result
+
+if __name__ == '__main__':
+    # This is used when running locally only. When deploying to Google App
+    # Engine, a webserver process such as Gunicorn will serve the app. This
+    # can be configured by adding an `entrypoint` to app.yaml.
+    app.run()
